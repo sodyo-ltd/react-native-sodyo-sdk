@@ -1,0 +1,28 @@
+
+{
+  "name": "@sodyo/react-native-sodyo-sdk",
+  "version": "0.1.0",
+  "description": "RNSodyoSdk",
+  "main": "sodyosdk.js",
+  "typings": "./sodyosdk.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sodyo-ltd/react-native-sodyo-sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/sodyo-ltd/react-native-sodyo-sdk/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native",
+    "sodyo"
+  ],
+  "author": "Sodyo",
+  "license": "MIT",
+  "homepage": "https://www.sodyo.com",
+  "peerDependencies": {
+    "react-native": "^0.41.2"
+  }
+}
