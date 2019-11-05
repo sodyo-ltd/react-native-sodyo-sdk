@@ -12,11 +12,11 @@ Pod::Spec.new do |s|
   s.author         = package['author']
   s.homepage       = package['homepage']
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/sodyo-ltd/SodyoSDKPod", :tag => "3.51.1" }
+  s.source       = { :git => "https://github.com/sodyo-ltd/SodyoSDKPod", :tag => "3.52.01" }
   s.source_files  = "ios/**/*.{h,m}"
   s.requires_arc = true
 
   s.dependency "React"
-  s.dependency "SodyoSDK", "3.51.15"
+  s.dependency "SodyoSDK", "3.52.01"
 end
 
