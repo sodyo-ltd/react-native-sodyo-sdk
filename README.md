@@ -104,4 +104,35 @@ Remove all listeners (including overlay callbacks)
 SodyoSDK.removeAllListeners()
 ```
 
+If you get an error similar to this when building Android:
+```
+More than one file was found with OS independent path 'META-INF/DEPENDENCIES'
+```
+
+then add in your `android/app/build.gradle` file add the following:
+```
+android {
+    ...
+
+    packagingOptions {
+        ...
+
+        exclude "META-INF/DEPENDENCIES.txt"
+        exclude "META-INF/LICENSE.txt"
+        exclude "META-INF/NOTICE.txt"
+        exclude "META-INF/NOTICE"
+        exclude "META-INF/LICENSE"
+        exclude "META-INF/DEPENDENCIES"
+        exclude "META-INF/notice.txt"
+        exclude "META-INF/license.txt"
+        exclude "META-INF/dependencies.txt"
+        exclude "META-INF/LGPL2.1"
+        exclude "META-INF/ASL2.0"
+        exclude "META-INF/maven/com.google.guava/guava/pom.properties"
+        exclude "META-INF/maven/com.google.guava/guava/pom.xml"
+    }
+}
+```
+
+
 For more examples see [the sample app](https://github.com/sodyo-ltd/react-native-sample-app)
