@@ -1,4 +1,12 @@
-import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
+import React, { Component, Fragment } from 'react';
+import {
+  View,
+  requireNativeComponent,
+  NativeModules,
+  NativeEventEmitter,
+  Platform,
+  StyleSheet,
+} from 'react-native';
 
 const { RNSodyoSdk } = NativeModules;
 
@@ -56,7 +64,7 @@ export default {
       if (typeof callback === 'function') {
         const data = typeof e.data === 'string'
           ? JSON.parse(e.data)
-          : e.data || {}
+          : e.data || {};
         callback(e.markerId, data);
       }
     });
@@ -162,4 +170,42 @@ export default {
   },
 };
 
+export class Scanner extends Component {
+  static defaultProps = {
+    isEnabled: true,
+  };
 
+  render () {
+    const { isEnabled, children } = this.props;
+    return (
+        <Fragment>
+          <RNSodyoSdkView
+              isEnabled={isEnabled}
+              style={{ height: '100%', width: '100%' }}
+          />
+
+          <View style={styles.container}>
+            {children}
+          </View>
+        </Fragment>
+    );
+  }
+}
+
+const RNSodyoSdkView = requireNativeComponent('RNSodyoSdkView', Scanner, {
+  nativeOnly: {},
+});
+
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  },
+})

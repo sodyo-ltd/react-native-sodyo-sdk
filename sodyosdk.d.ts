@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 declare const _default: {
   init (apiKey: string, successCallback?: () => void, errorCallback?: (msg: string) => void): void
   onError (callback: (err: string) => void): () => void,
@@ -15,6 +17,13 @@ declare const _default: {
   onMarkerContent (callback: (markerId: string, data: { [key: string]: any }) => void): () => void,
   performMarker (markerId: string): void,
   setSodyoLogoVisible (isVisible: boolean): void,
+}
+
+interface IScannerProps {
+  isEnabled?: boolean
+}
+
+export declare class Scanner extends React.PureComponent<IScannerProps> {
 }
 
 export default _default

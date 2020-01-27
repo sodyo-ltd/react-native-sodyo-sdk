@@ -162,7 +162,7 @@ RCT_EXPORT_METHOD(setSodyoLogoVisible:(BOOL *) isVisible)
 }
 
 - (void) sendCloseContentEvent {
-    NSLog(@"sendCloseContentEcent");
+    NSLog(@"sendCloseContentEvent");
     [self sendEventWithName:@"EventCloseSodyoContent" body:nil];
 }
 

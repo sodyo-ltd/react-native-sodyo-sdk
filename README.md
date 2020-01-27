@@ -1,9 +1,9 @@
 
 # React Native Sodyo SDK Plugin that wraps Sodyo sdk for Android and iOS
 
-[SodyoSDK for iOS](https://github.com/sodyo-ltd/SodyoSDKPod) v 3.52.01
+[SodyoSDK for iOS](https://github.com/sodyo-ltd/SodyoSDKPod) v3.53.01
 
-[SodyoSDK for Android](https://search.maven.org/search?q=a:sodyo-android-sdk) v 3.52.02
+[SodyoSDK for Android](https://search.maven.org/search?q=a:sodyo-android-sdk) v3.53.05
 
 
 ## Install
@@ -25,6 +25,15 @@ SodyoSDK.init(your-app-key,
     function(){ /* fail init callback */})
 ```
 
+Use scanner as fragment (only after initialize SodyoSDK)
+```
+import { Scanner } from '@sodyo/react-native-sodyo-sdk'
+...
+<Scanner isEnabled={true}>
+    <Text>Children on top of the scanner</Text>
+</Scanner>
+```
+
 Set the Sodyo error listener
 ```
 SodyoSDK.onError(
@@ -41,12 +50,12 @@ SodyoSDK.start(
 )
 ```
 
-Close Sodyo scanner
+Close Sodyo scanner (if scanner run by SodyoSDK.start())
 ```
 SodyoSDK.close()
 ```
 
-Marker listener
+Marker content listener
 ```
 SodyoSDK.onMarkerContent(
     function(markerId, markerData){ /* successfully scanned marker */ },
@@ -60,7 +69,6 @@ SodyoSDK.performMarker(markerId)
 ```
 
 Personal User Information (some object)
-
 ```
 SodyoSDK.setUserInfo(userInfo)
 ```

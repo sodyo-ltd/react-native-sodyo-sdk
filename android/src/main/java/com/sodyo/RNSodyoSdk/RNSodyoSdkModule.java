@@ -88,6 +88,10 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
 
           this.successCallback.invoke();
           this.isCallbackUsed = true;
+
+          SodyoCallback callbackClosure = new SodyoCallback(null, null);
+          Sodyo.getInstance().setSodyoScannerCallback(callbackClosure);
+          Sodyo.getInstance().setSodyoMarkerContentCallback(callbackClosure);
       }
 
       /**
@@ -123,6 +127,8 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
        */
       @Override
       public void onMarkerDetect(String markerType, String data, String error) {
+          Log.i(TAG, "onMarkerDetect()");
+
           if (data == null) {
               data = "null";
           }
@@ -149,6 +155,8 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
        */
       @Override
       public void onMarkerContent(String markerId, JSONObject data) {
+        Log.i(TAG, "onMarkerContent()");
+
         WritableMap params = Arguments.createMap();
         params.putString("markerId", markerId);
 
@@ -183,12 +191,9 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void start() {
       Log.i(TAG, "start()");
-      SodyoCallback callbackClosure = new SodyoCallback(null, null);
       Intent intent = new Intent(this.reactContext, SodyoScannerActivity.class);
       Activity activity = getCurrentActivity();
       activity.startActivityForResult(intent, SODYO_SCANNER_REQUEST_CODE);
-      Sodyo.getInstance().setSodyoScannerCallback(callbackClosure);
-      Sodyo.getInstance().setSodyoMarkerContentCallback(callbackClosure);
   }
 
   @ReactMethod
@@ -254,12 +259,14 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void performMarker(String markerId) {
+      Log.i(TAG, "performMarker()");
       Activity activity = getCurrentActivity();
       Sodyo.performMarker(markerId, activity);
   }
 
   @ReactMethod
   public void setSodyoLogoVisible(Boolean isVisible) {
+    Log.i(TAG, "setSodyoLogoVisible()");
     Sodyo.setSodyoLogoVisible(isVisible);
   }
 

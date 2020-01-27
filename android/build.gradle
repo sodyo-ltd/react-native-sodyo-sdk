@@ -46,7 +46,7 @@ android {
       exclude "META-INF/ASL2.0"
       exclude "META-INF/maven/com.google.guava/guava/pom.properties"
       exclude "META-INF/maven/com.google.guava/guava/pom.xml"
-     }
+    }
 }
 
 repositories {
@@ -55,7 +55,7 @@ repositories {
 
 dependencies {
     implementation ('com.facebook.react:react-native:+')
-    implementation ('com.sodyo:sodyo-android-sdk:3.52.02') {
+    implementation ('com.sodyo:sodyo-android-sdk:3.53.05') {
       transitive = true
       exclude group: 'com.parse.bolts', module: 'bolts-android'
     }
