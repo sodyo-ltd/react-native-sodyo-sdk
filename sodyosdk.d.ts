@@ -8,7 +8,7 @@ declare const _default: {
   start (successCallback?: (immediateData?: string) => void, errorCallback?: (msg: string) => void): void
   close (): void
   setUserInfo (userInfo: { [key: string]: string | number }): void
-  setScannerParams (scannerPreferences: { [key: string]: string | number }): void
+  setScannerParams (scannerPreferences: { [key: string]: string }): void
   setCustomAdLabel (label: string): void
   setAppUserId (appUserId: string): void
   setOverlayView (html: string): void

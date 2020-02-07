@@ -96,6 +96,31 @@ public final class ConversionUtil {
     }
 
     /**
+     * toFlatMap converts a {@link ReadableMap} into a HashMap<string, string>.
+     *
+     * @param readableMap The ReadableMap to be conveted.
+     * @return A HashMap containing the data that was in the ReadableMap.
+     */
+    public static  Map<String, String> toFlatMap(@Nullable ReadableMap readableMap) {
+        if (readableMap == null) {
+            return null;
+        }
+
+        com.facebook.react.bridge.ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
+        if (!iterator.hasNextKey()) {
+            return null;
+        }
+
+        Map<String, String> result = new HashMap<>();
+        while (iterator.hasNextKey()) {
+            String key = iterator.nextKey();
+            result.put(key, readableMap.getString(key));
+        }
+
+        return result;
+    }
+
+    /**
      * toList converts a {@link ReadableArray} into an ArrayList.
      *
      * @param readableArray The ReadableArray to be conveted.

@@ -174,6 +174,11 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void init(final String apiKey, Callback successCallback, Callback errorCallback) {
       Log.i(TAG, "init()");
 
+      if (Sodyo.isInitialized()) {
+          Log.i(TAG, "init(): already initialized, ignore");
+          return;
+      }
+
       final SodyoCallback callbackClosure = new SodyoCallback(successCallback, errorCallback);
 
       UiThreadUtil.runOnUiThread(new Runnable() {
@@ -227,7 +232,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void setScannerParams(ReadableMap scannerPreferences) {
       Log.i(TAG, "setScannerParams()");
-      Sodyo.setScannerParams(ConversionUtil.toMap(scannerPreferences));
+      Sodyo.setScannerParams(ConversionUtil.toFlatMap(scannerPreferences));
   }
 
   @ReactMethod
