@@ -22,8 +22,6 @@ import android.util.Log;
 import android.content.Intent;
 import android.app.Application;
 import android.app.Activity;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.graphics.Color;
 
 import org.json.JSONObject;
@@ -236,33 +234,6 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void setOverlayView(final String html) {
-      Log.i(TAG, "setOverlayView()");
-
-      UiThreadUtil.runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-              WebView webView = new WebView(reactContext);
-              webView.loadDataWithBaseURL("", html, "text/html", "UTF-8", "");
-              webView.setBackgroundColor(Color.TRANSPARENT);
-              webView.setWebViewClient(new WebViewClient() {
-                  @Override
-                  public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                      String[] parsedUrl = url.split("sodyosdk://");
-
-                      if (parsedUrl.length >= 2) {
-                          callOverlayCallback(parsedUrl[1]);
-                      }
-
-                      return true;
-                  }
-              });
-              Sodyo.setOverlayView(webView);
-          }
-      });
-  }
-
-  @ReactMethod
   public void performMarker(String markerId) {
       Log.i(TAG, "performMarker()");
       Activity activity = getCurrentActivity();
@@ -273,14 +244,6 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void setSodyoLogoVisible(Boolean isVisible) {
     Log.i(TAG, "setSodyoLogoVisible()");
     Sodyo.setSodyoLogoVisible(isVisible);
-  }
-
-  private void callOverlayCallback(String callbackName) {
-      Log.i(TAG, "callOverlayCallback()");
-
-      WritableMap params = Arguments.createMap();
-      params.putString("callback", callbackName);
-      this.sendEvent("EventWebViewCallback", params);
   }
 
   private void sendEvent(String eventName, @Nullable WritableMap params) {

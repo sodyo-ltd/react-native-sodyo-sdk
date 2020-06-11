@@ -64,12 +64,6 @@ RCT_EXPORT_METHOD(setUserInfo:(NSDictionary *) userInfo)
     [SodyoSDK setUserInfo:userInfo];
 }
 
-RCT_EXPORT_METHOD(setOverlayView:(NSString *)html)
-{
-    NSLog(@"setOverlayView");
-    self.htmlOverlay = html;
-}
-
 RCT_EXPORT_METHOD(setScannerParams:(NSDictionary *) params)
 {
     NSLog(@"setScannerParams");
@@ -96,38 +90,7 @@ RCT_EXPORT_METHOD(setSodyoLogoVisible:(BOOL *) isVisible)
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"EventSodyoError", @"EventMarkerDetectSuccess", @"EventMarkerDetectError", @"EventMarkerContent", @"EventWebViewCallback", @"EventCloseSodyoContent"];
-}
-
-- (void)setOverlayWebView
-{
-    UIView *overlay = [SodyoSDK overlayView];
-    UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-    self.webViewOverlay = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0,  rootViewController.view.frame.size.width, rootViewController.view.frame.size.height)];
-    self.webViewOverlay.delegate = self;
-    self.webViewOverlay.opaque = NO;
-    self.webViewOverlay.scrollView.bounces = NO;
-    self.webViewOverlay.backgroundColor = [UIColor clearColor];
-    self.webViewOverlay.scalesPageToFit = YES;
-    [self.webViewOverlay loadHTMLString:self.htmlOverlay baseURL:nil];
-    [overlay addSubview:self.webViewOverlay];
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        NSURL *url = request.URL;
-        NSString *scheme = [url scheme];
-        if ([scheme isEqualToString:@"sodyosdk"]) {
-            NSString *absoluteUrl = [url absoluteString];
-            NSArray *parsedUrl = [absoluteUrl componentsSeparatedByString:@"sodyosdk://"];
-            if ([parsedUrl count] < 2) return NO;
-
-            NSString *methodName = parsedUrl[1];
-            [self sendEventWithName:@"EventWebViewCallback" body:@{@"callback": methodName}];
-        }
-    }
-
-    return YES;
+    return @[@"EventSodyoError", @"EventMarkerDetectSuccess", @"EventMarkerDetectError", @"EventMarkerContent", @"EventCloseSodyoContent"];
 }
 
 - (void) launchSodyoScanner {
@@ -136,17 +99,9 @@ RCT_EXPORT_METHOD(setSodyoLogoVisible:(BOOL *) isVisible)
         self->sodyoScanner = [SodyoSDK initSodyoScanner];
     }
 
-    if (!self.webViewOverlay) {
-        [self setOverlayWebView];
-    }
-
     if (sodyoScanner.isViewLoaded && sodyoScanner.view.window) {
         NSLog(@"Sodyo scanner already active");
         return;
-    }
-
-    if (self.htmlOverlay) {
-        [self.webViewOverlay loadHTMLString:self.htmlOverlay baseURL:nil];
     }
 
     UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;

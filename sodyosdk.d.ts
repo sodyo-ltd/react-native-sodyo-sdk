@@ -11,8 +11,6 @@ declare const _default: {
   setScannerParams (scannerPreferences: { [key: string]: string }): void
   setCustomAdLabel (label: string): void
   setAppUserId (appUserId: string): void
-  setOverlayView (html: string): void
-  setOverlayCallback (callbackName: string, callback: () => void): void
   removeAllListeners (eventType?: string): void
   onMarkerContent (callback: (markerId: string, data: { [key: string]: any }) => void): () => void,
   performMarker (markerId: string): void,

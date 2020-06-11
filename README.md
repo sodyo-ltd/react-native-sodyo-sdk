@@ -69,6 +69,7 @@ SodyoSDK.performMarker(markerId)
 ```
 
 Personal User Information (some object)
+
 ```
 SodyoSDK.setUserInfo(userInfo)
 ```
@@ -90,16 +91,7 @@ SodyoSDK.setCustomAdLabel(label)
 ```
 `The label may include one or more tags in comma-separated values (CSV) format as follows: “label1,label2,label3”`
 
-Customizing the scanner user interface
-```
-// set any html (with css)
-SodyoSDK.setOverlayView('<a href="sodyosdk://handleClose">Close</a>') 
-
-// define a handler for the button
-SodyoSDK.setOverlayCallback('handleClose', () => { /* do something */ });
-```
-
-Remove all listeners (including overlay callbacks)
+Remove all listeners
 ```
 SodyoSDK.removeAllListeners()
 ```

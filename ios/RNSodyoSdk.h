@@ -21,8 +21,6 @@
 
 @property (nonatomic, strong) RCTResponseSenderBlock succesStartCallback;
 @property (nonatomic, strong) RCTResponseSenderBlock errorStartCallback;
-@property (nonatomic, retain) NSString *htmlOverlay;
-@property (nonatomic, retain) UIWebView *webViewOverlay;
 @property (nonatomic) BOOL isCloseContentObserverExist;
 
 @end

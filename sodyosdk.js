@@ -11,14 +11,6 @@ import {
 const { RNSodyoSdk } = NativeModules;
 
 const eventEmitter = new NativeEventEmitter(RNSodyoSdk);
-let callbacks = {};
-
-function registerCallback (name, callback) {
-  if (!name || typeof callback !== 'function') {
-    return false;
-  }
-  callbacks[name] = callback;
-}
 
 export default {
   init: (apiKey, successCallabck, errorCallback) => {
@@ -100,7 +92,6 @@ export default {
   start: (successCallabck, errorCallback) => {
     eventEmitter.removeAllListeners('EventMarkerDetectSuccess');
     eventEmitter.removeAllListeners('EventMarkerDetectError');
-    eventEmitter.removeAllListeners('EventWebViewCallback');
 
     RNSodyoSdk.start();
 
@@ -115,28 +106,15 @@ export default {
         errorCallback(e.error);
       }
     });
-
-    eventEmitter.addListener('EventWebViewCallback', (e) => {
-      if (
-        e &&
-        e.callback &&
-        callbacks.hasOwnProperty(e.callback) &&
-        typeof callbacks[e.callback] === 'function'
-      ) {
-        callbacks[e.callback]();
-      }
-    });
   },
 
   removeAllListeners: () => {
-    callbacks = {};
     return eventEmitter.removeAllListeners();
   },
 
   close: () => {
     eventEmitter.removeAllListeners('EventMarkerDetectSuccess');
     eventEmitter.removeAllListeners('EventMarkerDetectError');
-    eventEmitter.removeAllListeners('EventWebViewCallback');
 
     return RNSodyoSdk.close();
   },
@@ -155,14 +133,6 @@ export default {
 
   setAppUserId: (appUserId) => {
     return RNSodyoSdk.setAppUserId(appUserId);
-  },
-
-  setOverlayView: (html) => {
-    return RNSodyoSdk.setOverlayView(html);
-  },
-
-  setOverlayCallback: (callbackName, callback) => {
-    return registerCallback(callbackName, callback);
   },
 
   setSodyoLogoVisible: (isVisible) => {
