@@ -154,7 +154,7 @@ export class Scanner extends Component {
               style={{ height: '100%', width: '100%' }}
           />
 
-          <View style={styles.container}>
+          <View style={styles.container} pointerEvents="box-none">
             {children}
           </View>
         </Fragment>
