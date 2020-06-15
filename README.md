@@ -33,6 +33,7 @@ import { Scanner } from '@sodyo/react-native-sodyo-sdk'
     <Text>Children on top of the scanner</Text>
 </Scanner>
 ```
+`isEnabled toggles the Scanners active / pause status.`
 
 Set the Sodyo error listener
 ```
