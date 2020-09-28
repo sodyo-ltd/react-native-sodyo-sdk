@@ -13,8 +13,8 @@ const { RNSodyoSdk } = NativeModules;
 const eventEmitter = new NativeEventEmitter(RNSodyoSdk);
 
 export default {
-  init: (apiKey, successCallabck, errorCallback) => {
-    return RNSodyoSdk.init(apiKey, successCallabck, errorCallback);
+  init: (apiKey, successCallback, errorCallback) => {
+    return RNSodyoSdk.init(apiKey, successCallback, errorCallback);
   },
 
   onError: (callback) => {
@@ -89,15 +89,15 @@ export default {
     return RNSodyoSdk.performMarker(markerId);
   },
 
-  start: (successCallabck, errorCallback) => {
+  start: (successCallback, errorCallback) => {
     eventEmitter.removeAllListeners('EventMarkerDetectSuccess');
     eventEmitter.removeAllListeners('EventMarkerDetectError');
 
     RNSodyoSdk.start();
 
     eventEmitter.addListener('EventMarkerDetectSuccess', (e) => {
-      if (typeof successCallabck === 'function') {
-        successCallabck(e.data);
+      if (typeof successCallback === 'function') {
+        successCallback(e.data);
       }
     });
 
