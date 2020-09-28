@@ -33,6 +33,22 @@ import com.sodyo.sdk.SodyoScannerCallback;
 import com.sodyo.sdk.SodyoMarkerContentCallback;
 
 public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
+  public static enum SodyoEnv {
+    DEV(3),
+    QA(0),
+    PROD(1);
+
+    private int value;
+
+    private SodyoEnv(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
+  }
+
   private static final int SODYO_SCANNER_REQUEST_CODE = 2222;
 
   private static final String TAG = "SodyoSDK";
@@ -244,6 +260,16 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void setSodyoLogoVisible(Boolean isVisible) {
     Log.i(TAG, "setSodyoLogoVisible()");
     Sodyo.setSodyoLogoVisible(isVisible);
+  }
+
+  @ReactMethod
+  private void setEnv(String env) {
+      Log.i(TAG, "setEnv:" + env);
+
+      Map<String, String> params = new HashMap<>();
+      String value = String.valueOf(SodyoEnv.valueOf(env.trim().toUpperCase()).getValue());
+      params.put("webad_env", value);
+      Sodyo.setScannerParams(params);
   }
 
   private void sendEvent(String eventName, @Nullable WritableMap params) {

@@ -1,7 +1,9 @@
 import * as React from 'react'
 
+type TEnv = 'DEV' | 'QA' | 'PROD';
+
 declare const _default: {
-  init (apiKey: string, successCallback?: () => void, errorCallback?: (msg: string) => void): void
+  init (apiKey: string, successCallback?: () => void, errorCallback?: (msg: string) => void, env?: TEnv): void
   onError (callback: (err: string) => void): () => void,
   onCloseScanner (callback: () => void): () => void,
   onCloseContent (callback: () => void): () => void,
@@ -15,6 +17,7 @@ declare const _default: {
   onMarkerContent (callback: (markerId: string, data: { [key: string]: any }) => void): () => void,
   performMarker (markerId: string): void,
   setSodyoLogoVisible (isVisible: boolean): void,
+  setEnv(env: TEnv): void,
 }
 
 interface IScannerProps {
@@ -22,6 +25,10 @@ interface IScannerProps {
 }
 
 export declare class Scanner extends React.PureComponent<IScannerProps> {
+}
+
+export declare const SODYO_ENV: {
+  [key in TEnv]: TEnv
 }
 
 export default _default

@@ -88,6 +88,15 @@ RCT_EXPORT_METHOD(setSodyoLogoVisible:(BOOL *) isVisible)
     [SodyoSDK hideDefaultOverlay];
 }
 
+RCT_EXPORT_METHOD(setEnv:(NSString *) env)
+{
+    NSLog(@"setEnv");
+
+    NSDictionary *envs = @{ @"DEV": @"3", @"QA": @"1", @"PROD": @"0" };
+    NSDictionary *params = @{ @"SodyoAdEnv" : envs[env] };
+    [SodyoSDK setScannerParams:params];
+}
+
 - (NSArray<NSString *> *)supportedEvents
 {
     return @[@"EventSodyoError", @"EventMarkerDetectSuccess", @"EventMarkerDetectError", @"EventMarkerContent", @"EventCloseSodyoContent"];

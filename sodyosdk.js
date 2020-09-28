@@ -138,6 +138,10 @@ export default {
   setSodyoLogoVisible: (isVisible) => {
     return RNSodyoSdk.setSodyoLogoVisible(isVisible);
   },
+
+  setEnv: (env) => {
+    return RNSodyoSdk.setEnv(env);
+  },
 };
 
 export class Scanner extends Component {
@@ -160,6 +164,12 @@ export class Scanner extends Component {
         </Fragment>
     );
   }
+}
+
+export const SODYO_ENV = {
+  DEV: 'DEV',
+  QA: 'QA',
+  PROD: 'PROD',
 }
 
 const RNSodyoSdkView = requireNativeComponent('RNSodyoSdkView', Scanner, {
