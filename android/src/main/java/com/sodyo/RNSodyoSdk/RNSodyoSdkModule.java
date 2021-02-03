@@ -269,6 +269,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       Map<String, String> params = new HashMap<>();
       String value = String.valueOf(SodyoEnv.valueOf(env.trim().toUpperCase()).getValue());
       params.put("webad_env", value);
+      params.put("scanner_QR_code_enabled", "false");
       Sodyo.setScannerParams(params);
   }
 

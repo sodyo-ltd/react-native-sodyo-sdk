@@ -93,7 +93,7 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
     NSLog(@"setEnv");
 
     NSDictionary *envs = @{ @"DEV": @"3", @"QA": @"1", @"PROD": @"0" };
-    NSDictionary *params = @{ @"SodyoAdEnv" : envs[env] };
+    NSDictionary *params = @{ @"SodyoAdEnv" : envs[env], @"ScanQR": @"false" };
     [SodyoSDK setScannerParams:params];
 }
 
