@@ -250,6 +250,12 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void addScannerParam(String key, String value) {
+      Log.i(TAG, "addScannerParam()");
+      Sodyo.addScannerParams(key, value);
+  }
+
+  @ReactMethod
   public void performMarker(String markerId) {
       Log.i(TAG, "performMarker()");
       Activity activity = getCurrentActivity();

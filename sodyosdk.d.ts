@@ -11,6 +11,7 @@ declare const _default: {
   close (): void
   setUserInfo (userInfo: { [key: string]: string | number }): void
   setScannerParams (scannerPreferences: { [key: string]: string }): void
+  addScannerParam (key: string, value: string): void
   setCustomAdLabel (label: string): void
   setAppUserId (appUserId: string): void
   removeAllListeners (eventType?: string): void

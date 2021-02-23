@@ -17,7 +17,7 @@ RCT_EXPORT_METHOD(
 {
     RCTLogInfo(@"SodyoSDK: init()");
 
-    self.succesStartCallback = successCallback;
+    self.successStartCallback = successCallback;
     self.errorStartCallback = errorCallback;
     [SodyoSDK LoadApp:apiKey Delegate:self MarkerDelegate:self PresentingViewController:nil];
 }
@@ -68,6 +68,12 @@ RCT_EXPORT_METHOD(setScannerParams:(NSDictionary *) params)
 {
     NSLog(@"setScannerParams");
     [SodyoSDK setScannerParams:params];
+}
+
+RCT_EXPORT_METHOD(addScannerParam:(NSString *) key value:(NSString *) value)
+{
+    NSLog(@"addScannerParam");
+    [SodyoSDK addScannerParams:key value:value];
 }
 
 RCT_EXPORT_METHOD(performMarker:(NSString *) markerId)
@@ -134,9 +140,9 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
 - (void) onSodyoAppLoadSuccess:(NSInteger)AppID {
     NSLog(@"onSodyoAppLoadSuccess");
 
-    if (self.succesStartCallback != nil) {
-        self.succesStartCallback(@[[NSNull null]]);
-        self.succesStartCallback = nil;
+    if (self.successStartCallback != nil) {
+        self.successStartCallback(@[[NSNull null]]);
+        self.successStartCallback = nil;
     }
 }
 

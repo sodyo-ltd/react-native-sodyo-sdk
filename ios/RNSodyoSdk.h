@@ -19,7 +19,7 @@
     UIViewController *sodyoScanner;
 }
 
-@property (nonatomic, strong) RCTResponseSenderBlock succesStartCallback;
+@property (nonatomic, strong) RCTResponseSenderBlock successStartCallback;
 @property (nonatomic, strong) RCTResponseSenderBlock errorStartCallback;
 @property (nonatomic) BOOL isCloseContentObserverExist;
 
