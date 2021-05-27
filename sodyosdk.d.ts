@@ -19,7 +19,6 @@ declare const _default: {
   performMarker (markerId: string): void,
   setSodyoLogoVisible (isVisible: boolean): void,
   setEnv(env: TEnv): void,
-  convertMarkerIdToIOS(markerId: string): string | null,
 }
 
 interface IScannerProps {

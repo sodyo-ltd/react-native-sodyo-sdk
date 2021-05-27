@@ -146,50 +146,6 @@ export default {
   setEnv: (env) => {
     return RNSodyoSdk.setEnv(env);
   },
-
-  convertMarkerIdToIOS: (markerId) => {
-    const getRange = size => [...Array(size).keys()]
-
-    if (!markerId) {
-      return null
-    }
-
-    const sizePart = markerId.substr(0, 2)
-    const codePart = markerId.substr(2)
-
-    if (sizePart.length < 2 || sizePart[0] !== sizePart[1] || !codePart) {
-      return null
-    }
-
-    const size = parseInt(sizePart[0], 10)
-
-    if (codePart.length !== size * size) {
-      return null
-    }
-
-    const baseMatrix = getRange(size).map((row) => {
-      return getRange(size).map(col => {
-        return codePart[row * size + col]
-      })
-    })
-
-    const iOSBatchSize = 4
-    const iOSBatchCount = (size - 1) * 2
-
-    const startIndex = [size - 2, 0]
-    const charDir = [[0, 0], [1, 0], [0, 1], [1, 1]]
-    const batchDir = [[0, 0], [0, 1], [-1, 0], [-1, 1]]
-
-    const iosMatrix = getRange(iOSBatchCount).map(batch => {
-      return getRange(iOSBatchSize).map(char => {
-        const y = (startIndex[0] + batchDir[batch][0]) + charDir[char][0]
-        const x = (startIndex[1] + batchDir[batch][1]) + charDir[char][1]
-        return baseMatrix[y][x]
-      })
-    })
-
-    return iosMatrix.map(batch => batch.join('')).join('')
-  }
 };
 
 export class Scanner extends Component {
