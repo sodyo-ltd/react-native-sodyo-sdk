@@ -76,6 +76,12 @@ RCT_EXPORT_METHOD(addScannerParam:(NSString *) key value:(NSString *) value)
     [SodyoSDK addScannerParams:key value:value];
 }
 
+RCT_EXPORT_METHOD(setDynamicProfileValue:(NSString *) key value:(NSString *) value)
+{
+    NSLog(@"setDynamicProfileValue");
+    [SodyoSDK setDynamicProfileValue:key value:value];
+}
+
 RCT_EXPORT_METHOD(performMarker:(NSString *) markerId)
 {
     NSLog(@"performMarker");

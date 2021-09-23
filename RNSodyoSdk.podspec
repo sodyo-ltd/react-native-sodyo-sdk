@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.author         = package['author']
   s.homepage       = package['homepage']
   s.platform     = :ios, "11.0"
-  s.source       = { :git => "https://github.com/sodyo-ltd/SodyoSDKPod", :tag => "3.54.22" }
+  s.source       = { :git => "https://github.com/sodyo-ltd/SodyoSDKPod", :tag => "3.54.24" }
   s.source_files  = "ios/**/*.{h,m}"
   s.requires_arc = true
 

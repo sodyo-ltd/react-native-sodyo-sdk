@@ -131,6 +131,10 @@ export default {
     return RNSodyoSdk.addScannerParam(key, value);
   },
 
+  setDynamicProfileValue: (key, value) => {
+    return RNSodyoSdk.setDynamicProfileValue(key, value);
+  },
+
   setCustomAdLabel: (label) => {
     return RNSodyoSdk.setCustomAdLabel(label);
   },

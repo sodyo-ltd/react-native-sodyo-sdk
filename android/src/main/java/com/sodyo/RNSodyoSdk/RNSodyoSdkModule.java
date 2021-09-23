@@ -256,6 +256,12 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+    public void setDynamicProfileValue(String key, String value) {
+        Log.i(TAG, "setDynamicProfileValue()");
+        Sodyo.setDynamicProfileValue(key, value);
+    }
+
+  @ReactMethod
   public void performMarker(String markerId) {
       Log.i(TAG, "performMarker()");
       Activity activity = getCurrentActivity();
