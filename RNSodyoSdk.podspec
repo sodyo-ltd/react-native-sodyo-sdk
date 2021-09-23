@@ -17,6 +17,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency "React"
-  s.dependency "SodyoSDK", "~> 3.54.24"
+  s.dependency "SodyoSDK", "3.54.24"
 end
 
