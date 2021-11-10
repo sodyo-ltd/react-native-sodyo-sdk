@@ -123,6 +123,9 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
           this.isCallbackUsed = true;
       }
 
+      public void permissionError(String err1, String err2) {
+      }
+
       /**
        * SodyoInitCallback implementation
        */
