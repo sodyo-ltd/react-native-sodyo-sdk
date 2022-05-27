@@ -18,6 +18,7 @@ declare const _default: {
   removeAllListeners (eventType?: string): void
   onMarkerContent (callback: (markerId: string, data: { [key: string]: any }) => void): () => void,
   performMarker (markerId: string): void,
+  startTroubleshoot (): void,
   setSodyoLogoVisible (isVisible: boolean): void,
   setEnv(env: TEnv): void,
 }

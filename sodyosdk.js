@@ -89,6 +89,10 @@ export default {
     return RNSodyoSdk.performMarker(markerId);
   },
 
+  startTroubleshoot: () => {
+    return RNSodyoSdk.startTroubleshoot();
+  },
+
   start: (successCallback, errorCallback) => {
     eventEmitter.removeAllListeners('EventMarkerDetectSuccess');
     eventEmitter.removeAllListeners('EventMarkerDetectError');

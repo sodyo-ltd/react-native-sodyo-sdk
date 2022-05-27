@@ -272,6 +272,13 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void startTroubleshoot() {
+      Log.i(TAG, "startTroubleshoot()");
+      Activity activity = getCurrentActivity();
+      Sodyo.startTroubleshoot(activity);
+  }
+
+  @ReactMethod
   public void setSodyoLogoVisible(Boolean isVisible) {
     Log.i(TAG, "setSodyoLogoVisible()");
     Sodyo.setSodyoLogoVisible(isVisible);
