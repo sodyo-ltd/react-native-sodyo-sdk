@@ -90,6 +90,13 @@ RCT_EXPORT_METHOD(performMarker:(NSString *) markerId)
     [SodyoSDK performMarker:markerId];
 }
 
+RCT_EXPORT_METHOD(startTroubleshoot)
+{
+    NSLog(@"startTroubleshoot");
+
+    [SodyoSDK startTroubleshoot:sodyoScanner];
+}
+
 RCT_EXPORT_METHOD(setSodyoLogoVisible:(BOOL *) isVisible)
 {
     NSLog(@"setSodyoLogoVisible");

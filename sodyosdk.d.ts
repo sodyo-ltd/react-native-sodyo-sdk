@@ -25,6 +25,7 @@ declare const _default: {
 
 interface IScannerProps {
   isEnabled?: boolean
+  isTroubleShootingEnabled?: boolean
 }
 
 export declare class Scanner extends React.PureComponent<IScannerProps> {

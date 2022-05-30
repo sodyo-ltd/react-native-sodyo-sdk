@@ -159,21 +159,31 @@ export default {
 export class Scanner extends Component {
   static defaultProps = {
     isEnabled: true,
+    isTroubleShootingEnabled: false,
   };
 
-  render () {
-    const { isEnabled, children } = this.props;
-    return (
-        <Fragment>
-          <RNSodyoSdkView
-              isEnabled={isEnabled}
-              style={{ height: '100%', width: '100%' }}
-          />
+  componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+    if (this.props.isTroubleShootingEnabled) {
+      if (Platform.OS !== 'ios') {
+        return RNSodyoSdk.startTroubleshoot()
+      }
+    }
+  }
 
-          <View style={styles.container} pointerEvents="box-none">
-            {children}
-          </View>
-        </Fragment>
+  render () {
+    const { isEnabled, isTroubleShootingEnabled, children } = this.props;
+    return (
+      <Fragment>
+        <RNSodyoSdkView
+          isEnabled={isEnabled}
+          isTroubleShootingEnabled={isTroubleShootingEnabled}
+          style={{ height: '100%', width: '100%' }}
+        />
+
+        <View style={styles.container} pointerEvents="box-none">
+          {children}
+        </View>
+      </Fragment>
     );
   }
 }

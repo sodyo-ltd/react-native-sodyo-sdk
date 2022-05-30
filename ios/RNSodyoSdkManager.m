@@ -40,6 +40,20 @@ RCT_CUSTOM_VIEW_PROPERTY(isEnabled, BOOL, UIView)
     [SodyoSDK stopScanning:self->sodyoScanner];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(isTroubleShootingEnabled, BOOL, UIView)
+{
+    NSLog(@"RNSodyoSdkManager set isTroubleShootingEnabled");
+
+    if (!self->sodyoScanner) {
+        return;
+    }
+
+    if ([RCTConvert BOOL:json]) {
+        [SodyoSDK startTroubleshoot:sodyoScanner];
+        return;
+    }
+}
+
 - (UIView *)view
 {
     UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
