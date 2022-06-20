@@ -66,6 +66,20 @@ export default {
     };
   },
 
+  onModeChange: (callback) => {
+    eventEmitter.removeAllListeners('ModeChangeCallback');
+
+    const subscription = eventEmitter.addListener('ModeChangeCallback', (e) => {
+      if (typeof callback === 'function') {
+        callback(e);
+      }
+    });
+
+    return () => {
+      return subscription.remove();
+    };
+  },
+
   onCloseContent: (callback) => {
     if (Platform.OS !== 'ios') {
       return () => undefined;
@@ -151,8 +165,20 @@ export default {
     return RNSodyoSdk.setSodyoLogoVisible(isVisible);
   },
 
+  setTroubleshootMode: () => {
+    return RNSodyoSdk.setTroubleshootMode();
+  },
+
+  setNormalMode: () => {
+    return RNSodyoSdk.setNormalMode();
+  },
+
   setEnv: (env) => {
     return RNSodyoSdk.setEnv(env);
+  },
+
+  getMode: () => {
+    return RNSodyoSdk.getMode();
   },
 };
 

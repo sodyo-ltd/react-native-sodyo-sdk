@@ -17,9 +17,13 @@ declare const _default: {
   setAppUserId (appUserId: string): void
   removeAllListeners (eventType?: string): void
   onMarkerContent (callback: (markerId: string, data: { [key: string]: any }) => void): () => void,
+  onModeChange (callback: (data: { [key: string]: any }) => void): () => void,
   performMarker (markerId: string): void,
   startTroubleshoot (): void,
   setSodyoLogoVisible (isVisible: boolean): void,
+  setTroubleshootMode (): void,
+  setNormalMode (): void,
+  getMode (): EScannerViewMode,
   setEnv(env: TEnv): void,
 }
 
@@ -33,6 +37,12 @@ export declare class Scanner extends React.PureComponent<IScannerProps> {
 
 export declare const SODYO_ENV: {
   [key in TEnv]: TEnv
+}
+
+export enum EScannerViewMode {
+  Normal = 'Normal',
+  Troubleshoot = 'Troubleshoot',
+  DeviceTester = 'DeviceTester'
 }
 
 export default _default
