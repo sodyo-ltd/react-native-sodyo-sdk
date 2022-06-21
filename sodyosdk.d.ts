@@ -17,7 +17,7 @@ declare const _default: {
   setAppUserId (appUserId: string): void
   removeAllListeners (eventType?: string): void
   onMarkerContent (callback: (markerId: string, data: { [key: string]: any }) => void): () => void,
-  onModeChange (callback: (data: { [key: string]: any }) => void): () => void,
+  onModeChange (callback: (data: ISodyoMode) => void): () => void,
   performMarker (markerId: string): void,
   startTroubleshoot (): void,
   setSodyoLogoVisible (isVisible: boolean): void,
