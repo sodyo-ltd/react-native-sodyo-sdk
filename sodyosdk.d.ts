@@ -40,9 +40,9 @@ export declare const SODYO_ENV: {
 }
 
 export enum EScannerViewMode {
-  Normal = 'Normal',
-  Troubleshoot = 'Troubleshoot',
-  DeviceTester = 'DeviceTester'
+  NORMAL = 'Normal',
+  TROUBLESHOOT = 'Troubleshoot',
+  DEVICE_TESTER = 'DeviceTester'
 }
 
 export interface ISodyoMode {
