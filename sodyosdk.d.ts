@@ -45,4 +45,9 @@ export enum EScannerViewMode {
   DeviceTester = 'DeviceTester'
 }
 
+export interface ISodyoMode {
+  newMode: EScannerViewMode,
+  oldMode: EScannerViewMode,
+}
+
 export default _default
