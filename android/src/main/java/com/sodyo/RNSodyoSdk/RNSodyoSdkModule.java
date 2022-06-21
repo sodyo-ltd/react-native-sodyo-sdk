@@ -31,6 +31,8 @@ import com.sodyo.sdk.SodyoInitCallback;
 import com.sodyo.sdk.SodyoScannerActivity;
 import com.sodyo.sdk.SodyoScannerCallback;
 import com.sodyo.sdk.SodyoMarkerContentCallback;
+import com.sodyo.sdk.SodyoModeCallback;
+import com.sodyo.app_sdk.data.SettingsHelper;
 
 public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public static enum SodyoEnv {
@@ -78,7 +80,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
     return "RNSodyoSdk";
   }
 
-  private class SodyoCallback implements SodyoScannerCallback, SodyoInitCallback, SodyoMarkerContentCallback {
+  private class SodyoCallback implements SodyoScannerCallback, SodyoInitCallback, SodyoMarkerContentCallback, SodyoModeCallback {
 
       private Callback successCallback;
       private Callback errorCallback;
@@ -106,6 +108,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
           SodyoCallback callbackClosure = new SodyoCallback(null, null);
           Sodyo.getInstance().setSodyoScannerCallback(callbackClosure);
           Sodyo.getInstance().setSodyoMarkerContentCallback(callbackClosure);
+          Sodyo.getInstance().setSodyoModeCallback(callbackClosure);
       }
 
       /**
@@ -184,6 +187,21 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
         }
 
         sendEvent("EventMarkerContent", params);
+      }
+
+      /**
+       * SodyoModeCallback implementation
+       */
+      @Override
+      public void onModeChange(SettingsHelper.ScannerViewMode oldMode, SettingsHelper.ScannerViewMode newMode) {
+        Log.i(TAG, "onModeChange()");
+
+        WritableMap params = Arguments.createMap();
+
+        params.putString("oldMode", oldMode.toString());
+        params.putString("newMode", newMode.toString());
+
+        sendEvent("ModeChangeCallback", params);
       }
   }
 
@@ -276,6 +294,25 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       Log.i(TAG, "startTroubleshoot()");
       Activity activity = getCurrentActivity();
       Sodyo.startTroubleshoot(activity);
+  }
+
+  @ReactMethod
+  public void setTroubleshootMode() {
+      Log.i(TAG, "setTroubleshootMode()");
+      Activity activity = getCurrentActivity();
+      Sodyo.setMode(activity, SettingsHelper.ScannerViewMode.Troubleshoot);
+  }
+
+  @ReactMethod
+  public void setNormalMode() {
+      Log.i(TAG, "setNormalMode()");
+      Activity activity = getCurrentActivity();
+      Sodyo.setMode(activity, SettingsHelper.ScannerViewMode.Normal);
+  }
+
+  @ReactMethod
+  public SettingsHelper.ScannerViewMode getMode() {
+    return Sodyo.getMode();
   }
 
   @ReactMethod

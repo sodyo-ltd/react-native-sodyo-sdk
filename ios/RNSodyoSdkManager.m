@@ -14,9 +14,9 @@
 
 #import <UIKit/UIKit.h>
 #import "RNSodyoSdkView.m"
+#import "RNSodyoScanner.h"
 
 @interface RNSodyoSdkManager : RCTViewManager {
-    UIViewController *sodyoScanner;
 }
 @end
 
@@ -28,23 +28,27 @@ RCT_CUSTOM_VIEW_PROPERTY(isEnabled, BOOL, UIView)
 {
     NSLog(@"RNSodyoSdkManager set isEnabled");
 
-    if (!self->sodyoScanner) {
+    sodyoScanner = [RNSodyoScanner getSodyoScanner];
+
+    if (!sodyoScanner) {
         return;
     }
 
     if ([RCTConvert BOOL:json]) {
-        [SodyoSDK startScanning:self->sodyoScanner];
+        [SodyoSDK startScanning:sodyoScanner];
         return;
     }
 
-    [SodyoSDK stopScanning:self->sodyoScanner];
+    [SodyoSDK stopScanning:sodyoScanner];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(isTroubleShootingEnabled, BOOL, UIView)
 {
     NSLog(@"RNSodyoSdkManager set isTroubleShootingEnabled");
 
-    if (!self->sodyoScanner) {
+    sodyoScanner = [RNSodyoScanner getSodyoScanner];
+
+    if (!sodyoScanner) {
         return;
     }
 
@@ -58,7 +62,9 @@ RCT_CUSTOM_VIEW_PROPERTY(isTroubleShootingEnabled, BOOL, UIView)
 {
     UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
 
-    self->sodyoScanner = [SodyoSDK initSodyoScanner];
+    sodyoScanner = [SodyoSDK initSodyoScanner];
+
+    [RNSodyoScanner setSodyoScanner:sodyoScanner];
     [rootViewController addChildViewController:sodyoScanner];
 
     RNSodyoSdkView *view = [[RNSodyoSdkView alloc] initWithView:sodyoScanner.view];
