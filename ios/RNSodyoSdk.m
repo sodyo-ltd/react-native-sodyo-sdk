@@ -1,5 +1,6 @@
 
 #import "RNSodyoSdk.h"
+#import "RNSodyoScanner.h"
 
 @implementation RNSodyoSdk
 
@@ -97,6 +98,23 @@ RCT_EXPORT_METHOD(startTroubleshoot)
     [SodyoSDK startTroubleshoot:sodyoScanner];
 }
 
+
+RCT_EXPORT_METHOD(setTroubleshootMode)
+{
+    NSLog(@"setTroubleshootMode");
+    sodyoScanner = [RNSodyoScanner getSodyoScanner];
+
+    [SodyoSDK setMode:sodyoScanner mode:SodyoModeTroubleshoot];
+}
+
+RCT_EXPORT_METHOD(setNormalMode)
+{
+    NSLog(@"setNormalMode");
+    sodyoScanner = [RNSodyoScanner getSodyoScanner];
+
+    [SodyoSDK setMode:sodyoScanner mode:SodyoModeNormal];
+}
+
 RCT_EXPORT_METHOD(setSodyoLogoVisible:(BOOL *) isVisible)
 {
     NSLog(@"setSodyoLogoVisible");
@@ -118,13 +136,16 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"EventSodyoError", @"EventMarkerDetectSuccess", @"EventMarkerDetectError", @"EventMarkerContent", @"EventCloseSodyoContent"];
+    return @[@"EventSodyoError", @"EventMarkerDetectSuccess", @"EventMarkerDetectError", @"EventMarkerContent", @"EventCloseSodyoContent", @"ModeChangeCallback"];
 }
 
 - (void) launchSodyoScanner {
     NSLog(@"launchSodyoScanner");
-    if (!self->sodyoScanner) {
-        self->sodyoScanner = [SodyoSDK initSodyoScanner];
+    sodyoScanner = [RNSodyoScanner getSodyoScanner];
+
+
+    if (!sodyoScanner) {
+        [RNSodyoScanner setSodyoScanner:sodyoScanner];
     }
 
     if (sodyoScanner.isViewLoaded && sodyoScanner.view.window) {
@@ -147,6 +168,17 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
 - (void) sendCloseContentEvent {
     NSLog(@"sendCloseContentEvent");
     [self sendEventWithName:@"EventCloseSodyoContent" body:nil];
+}
+
+- (NSString *) convertScannerModeToString:(SodyoMode)mode {
+    switch (mode) {
+        case SodyoModeTroubleshoot:
+            return @"Troubleshoot";
+        case SodyoModeNormal:
+            return @"Normal";
+        default:
+            return @"";
+    }
 }
 
 #pragma mark - SodyoSDKDelegate
@@ -184,4 +216,14 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
     NSLog(@"SodyoMarkerDetectedWithData: %@", Data);
     [self sendEventWithName:@"EventMarkerContent" body:@{@"markerId": markerId, @"data": Data}];
 }
+
+
+- (void) onModeChange:(SodyoMode)from to:(SodyoMode)to {
+    NSLog(@"onModeChange");
+    NSString* fromConverted = [self convertScannerModeToString:from];
+    NSString* toConverted = [self convertScannerModeToString:to];
+
+    [self sendEventWithName:@"ModeChangeCallback" body:@{@"oldMode": fromConverted, @"newMode": toConverted}];
+}
+
 @end
