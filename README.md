@@ -3,7 +3,7 @@
 
 [SodyoSDK for iOS](https://github.com/sodyo-ltd/SodyoSDKPod) v3.55.02
 
-[SodyoSDK for Android](https://search.maven.org/search?q=a:sodyo-android-sdk) v3.55.03
+[SodyoSDK for Android](https://search.maven.org/search?q=a:sodyo-android-sdk) v3.55.05
 
 
 ## Install
