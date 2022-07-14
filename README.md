@@ -1,9 +1,9 @@
 
 # React Native Sodyo SDK Plugin that wraps Sodyo sdk for Android and iOS
 
-[SodyoSDK for iOS](https://github.com/sodyo-ltd/SodyoSDKPod) v3.54.28
+[SodyoSDK for iOS](https://github.com/sodyo-ltd/SodyoSDKPod) v3.55.02
 
-[SodyoSDK for Android](https://search.maven.org/search?q=a:sodyo-android-sdk) v3.54.39
+[SodyoSDK for Android](https://search.maven.org/search?q=a:sodyo-android-sdk) v3.55.03
 
 
 ## Install
