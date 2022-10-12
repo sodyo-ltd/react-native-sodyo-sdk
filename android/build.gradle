@@ -51,14 +51,11 @@ android {
 
 repositories {
     mavenCentral()
-    maven {
-      url 'http://172.28.2.86:8082/artifactory/local-release-qa'
-    }
 }
 
 dependencies {
     implementation ('com.facebook.react:react-native:+')
-    implementation ('com.sodyo:sodyo-android-sdk:3.55.05@aar') {
+    implementation ('com.sodyo:sodyo-android-sdk:3.55.09') {
       transitive = true
       exclude group: 'com.parse.bolts', module: 'bolts-android'
     }
