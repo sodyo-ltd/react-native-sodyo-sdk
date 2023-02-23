@@ -18,7 +18,7 @@ declare const _default: {
   removeAllListeners (eventType?: string): void
   onMarkerContent (callback: (markerId: string, data: { [key: string]: any }) => void): () => void,
   onModeChange (callback: (data: ISodyoMode) => void): () => void,
-  performMarker (markerId: string): void,
+  performMarker (markerId: string, customProperties: { [key: string]: any }): void,
   startTroubleshoot (): void,
   setSodyoLogoVisible (isVisible: boolean): void,
   setTroubleshootMode (): void,

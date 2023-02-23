@@ -99,8 +99,8 @@ export default {
     };
   },
 
-  performMarker: (markerId) => {
-    return RNSodyoSdk.performMarker(markerId);
+  performMarker: (markerId, customProperties) => {
+    return RNSodyoSdk.performMarker(markerId, customProperties);
   },
 
   startTroubleshoot: () => {

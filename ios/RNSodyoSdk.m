@@ -83,12 +83,12 @@ RCT_EXPORT_METHOD(setDynamicProfileValue:(NSString *) key value:(NSString *) val
     [SodyoSDK setDynamicProfileValue:key value:value];
 }
 
-RCT_EXPORT_METHOD(performMarker:(NSString *) markerId)
+RCT_EXPORT_METHOD(performMarker:(NSString *) markerId customProperties:(NSDictionary *) customProperties)
 {
     NSLog(@"performMarker");
     UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
     [SodyoSDK setPresentingViewController:rootViewController];
-    [SodyoSDK performMarker:markerId];
+    [SodyoSDK performMarker:markerId customProperties:customProperties];
 }
 
 RCT_EXPORT_METHOD(startTroubleshoot)

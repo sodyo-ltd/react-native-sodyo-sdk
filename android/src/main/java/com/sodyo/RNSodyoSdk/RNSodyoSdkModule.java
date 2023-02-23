@@ -283,10 +283,10 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void performMarker(String markerId) {
+  public void performMarker(String markerId, ReadableMap customProperties) {
       Log.i(TAG, "performMarker()");
       Activity activity = getCurrentActivity();
-      Sodyo.performMarker(markerId, activity);
+      Sodyo.performMarker(markerId, activity, ConversionUtil.toMap(customProperties));
   }
 
   @ReactMethod
