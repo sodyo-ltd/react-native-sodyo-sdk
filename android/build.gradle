@@ -55,7 +55,7 @@ repositories {
 
 dependencies {
     implementation ('com.facebook.react:react-native:+')
-    implementation ('com.sodyo:sodyo-android-sdk:3.64.01') {
+    implementation ('com.sodyo:sodyo-android-sdk:3.64.03') {
       transitive = true
       exclude group: 'com.parse.bolts', module: 'bolts-android'
     }
