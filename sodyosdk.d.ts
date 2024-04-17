@@ -7,6 +7,8 @@ declare const _default: {
   onError (callback: (err: string) => void): () => void,
   onCloseScanner (callback: () => void): () => void,
   onCloseContent (callback: () => void): () => void,
+  startScanning (): void
+  stopScanning (): void
   start (successCallback?: (immediateData?: string) => void, errorCallback?: (msg: string) => void): void
   close (): void
   setUserInfo (userInfo: { [key: string]: string | number }): void

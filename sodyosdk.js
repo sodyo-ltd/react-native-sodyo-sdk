@@ -137,6 +137,14 @@ export default {
     return RNSodyoSdk.close();
   },
 
+  startScanning: () => {
+    return RNSodyoSdk.startScanning();
+  },
+
+  stopScanning: () => {
+    return RNSodyoSdk.stopScanning();
+  },
+
   setUserInfo: (userInfo) => {
     return RNSodyoSdk.setUserInfo(userInfo);
   },

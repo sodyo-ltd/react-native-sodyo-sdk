@@ -277,6 +277,18 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void startScanning() {
+      Log.i(TAG, "startScanning()");
+      Sodyo.startScanning();
+  }
+
+  @ReactMethod
+  public void stopScanning() {
+      Log.i(TAG, "stopScanning()");
+      Sodyo.stopScanning();
+  }
+
+  @ReactMethod
   public void setDynamicProfileValue(String key, String value) {
      Log.i(TAG, "setDynamicProfileValue()");
      Sodyo.setDynamicProfileValue(key, value);
