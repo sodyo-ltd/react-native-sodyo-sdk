@@ -292,7 +292,8 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void setDynamicProfile(ReadableMap profile) {
     Log.i(TAG, "setDynamicProfile()");
     if (profile != null) {
-        Sodyo.setDynamicProfile(ConversionUtil.toHashMap(profile));
+        HashMap<String, Object> profileMap = new HashMap<>(ConversionUtil.toMap(profile));
+        Sodyo.setDynamicProfile(profileMap);
     }
   }
 
