@@ -161,6 +161,10 @@ export default {
     return RNSodyoSdk.setDynamicProfileValue(key, value);
   },
 
+  setDynamicProfile: (profile) => {
+    return RNSodyoSdk.setDynamicProfile(profile);
+  },
+
   setCustomAdLabel: (label) => {
     return RNSodyoSdk.setCustomAdLabel(label);
   },
@@ -196,7 +200,7 @@ export class Scanner extends Component {
     isTroubleShootingEnabled: false,
   };
 
-  componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.isTroubleShootingEnabled) {
       if (Platform.OS !== 'ios') {
         return RNSodyoSdk.startTroubleshoot()
