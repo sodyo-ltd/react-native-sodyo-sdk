@@ -1,6 +1,6 @@
 {
   "name": "@sodyo/react-native-sodyo-sdk",
-  "version": "3.18.3",
+  "version": "3.18.4",
   "description": "RNSodyoSdk",
   "main": "sodyosdk.js",
   "typings": "./sodyosdk.d.ts",
