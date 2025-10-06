@@ -1,6 +1,6 @@
 {
   "name": "@sodyo/react-native-sodyo-sdk",
-  "version": "3.18.6",
+  "version": "3.18.7",
   "description": "RNSodyoSdk",
   "main": "sodyosdk.js",
   "typings": "./sodyosdk.d.ts",
@@ -22,6 +22,6 @@
   "license": "MIT",
   "homepage": "https://www.sodyo.com",
   "peerDependencies": {
-    "react-native": "^0.41.2"
+    "react-native": "^0.69.12"
   }
 }
