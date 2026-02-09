@@ -13,7 +13,7 @@
 #endif
 
 #import <UIKit/UIKit.h>
-#import "RNSodyoSdkView.m"
+#import "RNSodyoSdkView.h"
 #import "RNSodyoScanner.h"
 
 @interface RNSodyoSdkManager : RCTViewManager {

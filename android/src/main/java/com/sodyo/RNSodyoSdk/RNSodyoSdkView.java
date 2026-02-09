@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 
 import com.sodyo.sdk.SodyoScannerFragment;
 
+@SuppressWarnings("deprecation")
 public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
     static final String TAG = "RNSodyoSdkView";
 
@@ -44,25 +45,25 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
 
         final FrameLayout view = new FrameLayout(context);
 
-        // Obtain the current activity from the context
         Activity currentActivity = mCallerContext.getCurrentActivity();
         if (currentActivity == null) {
-            // Handle the situation when the activity is null
             Log.e(TAG, "Current activity is null, cannot initialize SodyoScannerFragment");
-            // Consider providing user feedback or a fallback mechanism
             return view;
         }
 
-        // Proceed with initialization as the activity is not null
-        if (sodyoFragment == null) {
-            Log.i(TAG,"init SodyoScannerFragment");
-            sodyoFragment = new SodyoScannerFragment();
+        FragmentManager fragmentManager = currentActivity.getFragmentManager();
+
+        // Clean up any previously added fragment to avoid "Fragment already added"
+        Fragment existing = fragmentManager.findFragmentByTag(TAG_FRAGMENT);
+        if (existing != null) {
+            Log.w(TAG, "Removing existing SodyoScannerFragment before re-adding");
+            fragmentManager.beginTransaction().remove(existing).commitNowAllowingStateLoss();
         }
 
-        // Use the current activity's fragment manager
-        FragmentManager fragmentManager = currentActivity.getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Log.i(TAG,"init SodyoScannerFragment");
+        sodyoFragment = new SodyoScannerFragment();
 
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(sodyoFragment, TAG_FRAGMENT).commitAllowingStateLoss();
         fragmentManager.executePendingTransactions();
 
@@ -84,7 +85,7 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
           Fragment fragment = fragmentManager.findFragmentByTag(TAG_FRAGMENT);
 
           if (fragment != null) {
-              fragmentManager.beginTransaction().remove(fragment).commit();
+              fragmentManager.beginTransaction().remove(fragment).commitNowAllowingStateLoss();
           }
         } catch (Exception e) {
           e.printStackTrace();
