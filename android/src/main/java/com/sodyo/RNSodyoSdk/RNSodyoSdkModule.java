@@ -331,9 +331,9 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       Sodyo.setMode(activity, SettingsHelper.ScannerViewMode.Normal);
   }
 
-  @ReactMethod
-  public SettingsHelper.ScannerViewMode getMode() {
-    return Sodyo.getMode();
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  public String getMode() {
+    return Sodyo.getMode().name();
   }
 
   @ReactMethod
