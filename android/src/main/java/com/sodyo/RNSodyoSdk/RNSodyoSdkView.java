@@ -81,11 +81,14 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
         isCameraEnabled = true;
 
         try {
-          FragmentManager fragmentManager = mCallerContext.getCurrentActivity().getFragmentManager();
-          Fragment fragment = fragmentManager.findFragmentByTag(TAG_FRAGMENT);
+          Activity currentActivity = mCallerContext.getCurrentActivity();
+          if (currentActivity != null) {
+              FragmentManager fragmentManager = currentActivity.getFragmentManager();
+              Fragment fragment = fragmentManager.findFragmentByTag(TAG_FRAGMENT);
 
-          if (fragment != null) {
-              fragmentManager.beginTransaction().remove(fragment).commitNowAllowingStateLoss();
+              if (fragment != null) {
+                  fragmentManager.beginTransaction().remove(fragment).commitNowAllowingStateLoss();
+              }
           }
         } catch (Exception e) {
           e.printStackTrace();

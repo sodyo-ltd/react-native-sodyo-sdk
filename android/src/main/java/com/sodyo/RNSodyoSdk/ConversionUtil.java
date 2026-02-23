@@ -39,8 +39,9 @@ public final class ConversionUtil {
 
         ReadableType readableType = readableMap.getType(key);
         switch (readableType) {
+            // Issue #9 fix: return null instead of the key name
             case Null:
-                result = key;
+                result = null;
                 break;
             case Boolean:
                 result = readableMap.getBoolean(key);
@@ -101,6 +102,7 @@ public final class ConversionUtil {
      * @param readableMap The ReadableMap to be conveted.
      * @return A HashMap containing the data that was in the ReadableMap.
      */
+    // Issue #15 fix: handle non-string value types
     public static  Map<String, String> toFlatMap(@Nullable ReadableMap readableMap) {
         if (readableMap == null) {
             return null;
@@ -114,7 +116,24 @@ public final class ConversionUtil {
         Map<String, String> result = new HashMap<>();
         while (iterator.hasNextKey()) {
             String key = iterator.nextKey();
-            result.put(key, readableMap.getString(key));
+            ReadableType type = readableMap.getType(key);
+            switch (type) {
+                case String:
+                    result.put(key, readableMap.getString(key));
+                    break;
+                case Number:
+                    result.put(key, String.valueOf(readableMap.getDouble(key)));
+                    break;
+                case Boolean:
+                    result.put(key, String.valueOf(readableMap.getBoolean(key)));
+                    break;
+                case Null:
+                    result.put(key, null);
+                    break;
+                default:
+                    result.put(key, String.valueOf(toObject(readableMap, key)));
+                    break;
+            }
         }
 
         return result;
@@ -135,8 +154,9 @@ public final class ConversionUtil {
         for (int index = 0; index < readableArray.size(); index++) {
             ReadableType readableType = readableArray.getType(index);
             switch (readableType) {
+                // Issue #9 fix: add null instead of index string
                 case Null:
-                    result.add(String.valueOf(index));
+                    result.add(null);
                     break;
                 case Boolean:
                     result.add(readableArray.getBoolean(index));
@@ -156,8 +176,9 @@ public final class ConversionUtil {
                 case Map:
                     result.add(toMap(readableArray.getMap(index)));
                     break;
+                // Issue #8 fix: add nested array to result instead of overwriting
                 case Array:
-                    result = toList(readableArray.getArray(index));
+                    result.add(toList(readableArray.getArray(index)));
                     break;
                 default:
                     throw new IllegalArgumentException("Could not convert object with index: " + index + ".");

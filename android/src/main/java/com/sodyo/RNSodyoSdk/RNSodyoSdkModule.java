@@ -75,6 +75,13 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
     this.reactContext.addActivityEventListener(mActivityEventListener);
   }
 
+  // Issue #4 fix: remove listener on destroy to prevent leak
+  @Override
+  public void onCatalystInstanceDestroy() {
+    super.onCatalystInstanceDestroy();
+    reactContext.removeActivityEventListener(mActivityEventListener);
+  }
+
   @Override
   public String getName() {
     return "RNSodyoSdk";
@@ -205,12 +212,16 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       }
   }
 
+  // Issue #7 fix: invoke success callback if already initialized
   @ReactMethod
   public void init(final String apiKey, Callback successCallback, Callback errorCallback) {
       Log.i(TAG, "init()");
 
       if (Sodyo.isInitialized()) {
-          Log.i(TAG, "init(): already initialized, ignore");
+          Log.i(TAG, "init(): already initialized");
+          if (successCallback != null) {
+              successCallback.invoke();
+          }
           return;
       }
 
@@ -228,11 +239,16 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       });
   }
 
+  // Issue #1 fix: null-check getCurrentActivity()
   @ReactMethod
   public void start() {
       Log.i(TAG, "start()");
-      Intent intent = new Intent(this.reactContext, SodyoScannerActivity.class);
       Activity activity = getCurrentActivity();
+      if (activity == null) {
+          Log.e(TAG, "start(): current activity is null");
+          return;
+      }
+      Intent intent = new Intent(activity, SodyoScannerActivity.class);
       activity.startActivityForResult(intent, SODYO_SCANNER_REQUEST_CODE);
   }
 
@@ -240,12 +256,22 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void close() {
       Log.i(TAG, "close()");
       Activity activity = getCurrentActivity();
+      if (activity == null) {
+          Log.e(TAG, "close(): current activity is null");
+          return;
+      }
       activity.finishActivity(SODYO_SCANNER_REQUEST_CODE);
   }
 
+  // Issue #6 fix: guard against uninitialized SDK
   @ReactMethod
   public void setUserInfo(ReadableMap userInfo) {
       Log.i(TAG, "setUserInfo()");
+
+      if (!Sodyo.isInitialized()) {
+          Log.w(TAG, "setUserInfo(): SDK not initialized yet");
+          return;
+      }
 
       if(userInfo != null) {
         Sodyo.getInstance().setUserInfo(ConversionUtil.toMap(userInfo));
@@ -307,6 +333,10 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void performMarker(String markerId, ReadableMap customProperties) {
       Log.i(TAG, "performMarker()");
       Activity activity = getCurrentActivity();
+      if (activity == null) {
+          Log.e(TAG, "performMarker(): current activity is null");
+          return;
+      }
       Sodyo.performMarker(markerId, activity, ConversionUtil.toMap(customProperties));
   }
 
@@ -314,6 +344,10 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void startTroubleshoot() {
       Log.i(TAG, "startTroubleshoot()");
       Activity activity = getCurrentActivity();
+      if (activity == null) {
+          Log.e(TAG, "startTroubleshoot(): current activity is null");
+          return;
+      }
       Sodyo.startTroubleshoot(activity);
   }
 
@@ -321,6 +355,10 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void setTroubleshootMode() {
       Log.i(TAG, "setTroubleshootMode()");
       Activity activity = getCurrentActivity();
+      if (activity == null) {
+          Log.e(TAG, "setTroubleshootMode(): current activity is null");
+          return;
+      }
       Sodyo.setMode(activity, SettingsHelper.ScannerViewMode.Troubleshoot);
   }
 
@@ -328,6 +366,10 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void setNormalMode() {
       Log.i(TAG, "setNormalMode()");
       Activity activity = getCurrentActivity();
+      if (activity == null) {
+          Log.e(TAG, "setNormalMode(): current activity is null");
+          return;
+      }
       Sodyo.setMode(activity, SettingsHelper.ScannerViewMode.Normal);
   }
 
@@ -342,19 +384,33 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
     Sodyo.setSodyoLogoVisible(isVisible);
   }
 
+  // Issue #2 fix: validate env input, Issue #10 fix: public instead of private
   @ReactMethod
-  private void setEnv(String env) {
+  public void setEnv(String env) {
       Log.i(TAG, "setEnv:" + env);
 
-      Map<String, String> params = new HashMap<>();
-      String value = String.valueOf(SodyoEnv.valueOf(env.trim().toUpperCase()).getValue());
-      params.put("webad_env", value);
-      params.put("scanner_QR_code_enabled", "false");
-      Sodyo.setScannerParams(params);
+      if (env == null) {
+          Log.e(TAG, "setEnv: env is null");
+          return;
+      }
+
+      try {
+          SodyoEnv sodyoEnv = SodyoEnv.valueOf(env.trim().toUpperCase());
+          Map<String, String> params = new HashMap<>();
+          params.put("webad_env", String.valueOf(sodyoEnv.getValue()));
+          params.put("scanner_QR_code_enabled", "false");
+          Sodyo.setScannerParams(params);
+      } catch (IllegalArgumentException e) {
+          Log.e(TAG, "setEnv: unknown env '" + env + "', expected DEV/QA/PROD");
+      }
   }
 
+  // Issue #12 fix: check for active React instance before sending events
   private void sendEvent(String eventName, @Nullable WritableMap params) {
-    this.reactContext
+    if (!reactContext.hasActiveReactInstance()) {
+        return;
+    }
+    reactContext
         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
         .emit(eventName, params);
   }
