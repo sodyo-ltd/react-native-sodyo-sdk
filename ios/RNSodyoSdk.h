@@ -15,9 +15,7 @@
   #import "SodyoSDK.h"
 #endif
 
-@interface RNSodyoSdk : RCTEventEmitter <RCTBridgeModule, SodyoSDKDelegate, SodyoMarkerDelegate> {
-    UIViewController *sodyoScanner;
-}
+@interface RNSodyoSdk : RCTEventEmitter <RCTBridgeModule, SodyoSDKDelegate, SodyoMarkerDelegate>
 
 @property (nonatomic, strong) RCTResponseSenderBlock successStartCallback;
 @property (nonatomic, strong) RCTResponseSenderBlock errorStartCallback;

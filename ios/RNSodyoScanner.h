@@ -8,12 +8,11 @@
 #ifndef RNSodyoScanner_h
 #define RNSodyoScanner_h
 
-
-#endif /* RNSodyoScanner_h */
-
-static UIViewController* sodyoScanner = nil;
+#import <UIKit/UIKit.h>
 
 @interface RNSodyoScanner : NSObject
 + (UIViewController *)getSodyoScanner;
 + (void)setSodyoScanner:(UIViewController *)sodyoScanner;
 @end
+
+#endif /* RNSodyoScanner_h */

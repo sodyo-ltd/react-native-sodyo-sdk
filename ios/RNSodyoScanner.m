@@ -7,17 +7,18 @@
 #import "RNSodyoScanner.h"
 #import <Foundation/Foundation.h>
 
+static UIViewController* _sharedScanner = nil;
+
 @implementation RNSodyoScanner
 
 + (UIViewController *) getSodyoScanner {
-  return sodyoScanner;
+  return _sharedScanner;
 }
 
 + (void) setSodyoScanner:(UIViewController*) newSodyoScanner {
-  if(sodyoScanner != newSodyoScanner) {
-    sodyoScanner = newSodyoScanner;
+  if(_sharedScanner != newSodyoScanner) {
+    _sharedScanner = newSodyoScanner;
   }
 }
 
 @end
-// implementation of getter and setter
