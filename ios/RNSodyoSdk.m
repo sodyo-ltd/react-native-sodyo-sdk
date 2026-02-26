@@ -1,4 +1,3 @@
-
 #import "RNSodyoSdk.h"
 #import "RNSodyoScanner.h"
 
@@ -16,7 +15,7 @@ RCT_EXPORT_METHOD(
   errorCallback:(RCTResponseSenderBlock)errorCallback
 )
 {
-    RCTLogInfo(@"SodyoSDK: init()");
+    RCTLogInfo(@"SodyoSDK: init() - apiKey: %@, successCallback: %@, errorCallback: %@", apiKey, successCallback ? @"provided" : @"nil", errorCallback ? @"provided" : @"nil");
 
     self.successStartCallback = successCallback;
     self.errorStartCallback = errorCallback;
@@ -25,9 +24,10 @@ RCT_EXPORT_METHOD(
 
 RCT_EXPORT_METHOD(createCloseContentListener)
 {
-    RCTLogInfo(@"SodyoSDK: createCloseContentListener()");
+    RCTLogInfo(@"SodyoSDK: createCloseContentListener() - isCloseContentObserverExist: %@", self.isCloseContentObserverExist ? @"YES" : @"NO");
 
     if (self.isCloseContentObserverExist) {
+        NSLog(@"SodyoSDK: createCloseContentListener - observer already exists, skipping");
         return;
     }
 
@@ -42,92 +42,96 @@ RCT_EXPORT_METHOD(createCloseContentListener)
 
 RCT_EXPORT_METHOD(start)
 {
-    NSLog(@"start");
+    NSLog(@"SodyoSDK: start - launching scanner");
     [self launchSodyoScanner];
 }
 
 RCT_EXPORT_METHOD(close)
 {
-    NSLog(@"close");
+    NSLog(@"SodyoSDK: close - closing scanner");
     [self closeScanner];
 }
 
 RCT_EXPORT_METHOD(setCustomAdLabel:(NSString *)labels)
 {
-    NSLog(@"setCustomAdLabel");
+    NSLog(@"SodyoSDK: setCustomAdLabel - labels: %@", labels);
     [SodyoSDK setCustomAdLabel:labels];
 }
 
 RCT_EXPORT_METHOD(setAppUserId:(NSString *)userId)
 {
-    NSLog(@"setAppUserId");
+    NSLog(@"SodyoSDK: setAppUserId - userId: %@", userId);
     [SodyoSDK setUserId:userId];
 }
 
 RCT_EXPORT_METHOD(setUserInfo:(NSDictionary *) userInfo)
 {
-    NSLog(@"setUserInfo");
+    NSLog(@"SodyoSDK: setUserInfo - userInfo: %@", userInfo);
     [SodyoSDK setUserInfo:userInfo];
 }
 
 RCT_EXPORT_METHOD(setScannerParams:(NSDictionary *) params)
 {
-    NSLog(@"setScannerParams");
+    NSLog(@"SodyoSDK: setScannerParams - params: %@", params);
     [SodyoSDK setScannerParams:params];
 }
 
 RCT_EXPORT_METHOD(addScannerParam:(NSString *) key value:(NSString *) value)
 {
-    NSLog(@"addScannerParam");
+    NSLog(@"SodyoSDK: addScannerParam - key: %@, value: %@", key, value);
     [SodyoSDK addScannerParams:key value:value];
 }
 
 RCT_EXPORT_METHOD(setDynamicProfile:(NSDictionary *) profile)
 {
-    NSLog(@"setDynamicProfile");
+    NSLog(@"SodyoSDK: setDynamicProfile - profile: %@", profile);
     [SodyoSDK setDynamicProfile:profile];
 }
 
 RCT_EXPORT_METHOD(setDynamicProfileValue:(NSString *) key value:(NSString *) value)
 {
-    NSLog(@"setDynamicProfileValue");
+    NSLog(@"SodyoSDK: setDynamicProfileValue - key: %@, value: %@", key, value);
     [SodyoSDK setDynamicProfileValue:key value:value];
 }
 
 RCT_EXPORT_METHOD(performMarker:(NSString *) markerId customProperties:(NSDictionary *) customProperties)
 {
-    NSLog(@"performMarker");
+    NSLog(@"SodyoSDK: performMarker - markerId: %@, customProperties: %@", markerId, customProperties);
     UIViewController *rootViewController = [self getRootViewController];
+    NSLog(@"SodyoSDK: performMarker - rootViewController: %@", rootViewController);
     [SodyoSDK setPresentingViewController:rootViewController];
     [SodyoSDK performMarker:markerId customProperties:customProperties];
 }
 
 RCT_EXPORT_METHOD(startTroubleshoot)
 {
-    NSLog(@"startTroubleshoot");
+    NSLog(@"SodyoSDK: startTroubleshoot");
     UIViewController *scanner = [RNSodyoScanner getSodyoScanner];
+    NSLog(@"SodyoSDK: startTroubleshoot - scanner: %@", scanner);
     [SodyoSDK startTroubleshoot:scanner];
 }
 
 
 RCT_EXPORT_METHOD(setTroubleshootMode)
 {
-    NSLog(@"setTroubleshootMode");
+    NSLog(@"SodyoSDK: setTroubleshootMode");
     UIViewController *scanner = [RNSodyoScanner getSodyoScanner];
+    NSLog(@"SodyoSDK: setTroubleshootMode - scanner: %@", scanner);
     [SodyoSDK setMode:scanner mode:SodyoModeTroubleshoot];
 }
 
 RCT_EXPORT_METHOD(setNormalMode)
 {
-    NSLog(@"setNormalMode");
+    NSLog(@"SodyoSDK: setNormalMode");
     UIViewController *scanner = [RNSodyoScanner getSodyoScanner];
+    NSLog(@"SodyoSDK: setNormalMode - scanner: %@", scanner);
     [SodyoSDK setMode:scanner mode:SodyoModeNormal];
 }
 
 // Issue #3 fix: BOOL instead of BOOL*
 RCT_EXPORT_METHOD(setSodyoLogoVisible:(BOOL) isVisible)
 {
-    NSLog(@"setSodyoLogoVisible");
+    NSLog(@"SodyoSDK: setSodyoLogoVisible - isVisible: %@", isVisible ? @"YES" : @"NO");
     if (isVisible) {
         return [SodyoSDK showDefaultOverlay];
     }
@@ -138,15 +142,16 @@ RCT_EXPORT_METHOD(setSodyoLogoVisible:(BOOL) isVisible)
 // Issue #8 fix: guard against nil env value
 RCT_EXPORT_METHOD(setEnv:(NSString *) env)
 {
-    NSLog(@"setEnv");
+    NSLog(@"SodyoSDK: setEnv - env: %@", env);
 
     NSDictionary *envs = @{ @"DEV": @"3", @"QA": @"1", @"PROD": @"0" };
     NSString *envValue = envs[env];
     if (!envValue) {
-        NSLog(@"RNSodyoSdk: Unknown env '%@', defaulting to PROD", env);
+        NSLog(@"SodyoSDK: setEnv - Unknown env '%@', defaulting to PROD", env);
         envValue = @"0";
     }
     NSDictionary *params = @{ @"SodyoAdEnv": envValue, @"ScanQR": @"false" };
+    NSLog(@"SodyoSDK: setEnv - resolved params: %@", params);
     [SodyoSDK setScannerParams:params];
 }
 
@@ -157,37 +162,41 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
 
 // Issue #2 fix: inverted null-check + use shared scanner accessor
 - (void) launchSodyoScanner {
-    NSLog(@"launchSodyoScanner");
+    NSLog(@"SodyoSDK: launchSodyoScanner");
     UIViewController *scanner = [RNSodyoScanner getSodyoScanner];
+    NSLog(@"SodyoSDK: launchSodyoScanner - scanner: %@", scanner);
 
     if (!scanner) {
-        NSLog(@"Sodyo scanner not initialized");
+        NSLog(@"SodyoSDK: launchSodyoScanner - scanner not initialized, aborting");
         return;
     }
 
     if (scanner.isViewLoaded && scanner.view.window) {
-        NSLog(@"Sodyo scanner already active");
+        NSLog(@"SodyoSDK: launchSodyoScanner - scanner already active (isViewLoaded: %@, window: %@)", scanner.isViewLoaded ? @"YES" : @"NO", scanner.view.window);
         return;
     }
 
     UIViewController *rootViewController = [self getRootViewController];
+    NSLog(@"SodyoSDK: launchSodyoScanner - rootViewController: %@", rootViewController);
     scanner.modalPresentationStyle = UIModalPresentationFullScreen;
     [SodyoSDK setPresentingViewController:rootViewController];
     [rootViewController presentViewController:scanner animated:YES completion:nil];
 }
 
 - (void) closeScanner {
-    NSLog(@"closeScanner");
+    NSLog(@"SodyoSDK: closeScanner");
     UIViewController *rootViewController = [self getRootViewController];
+    NSLog(@"SodyoSDK: closeScanner - rootViewController: %@", rootViewController);
     [rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) sendCloseContentEvent {
-    NSLog(@"sendCloseContentEvent");
+    NSLog(@"SodyoSDK: sendCloseContentEvent - sending EventCloseSodyoContent");
     [self sendEventWithName:@"EventCloseSodyoContent" body:nil];
 }
 
 - (NSString *) convertScannerModeToString:(SodyoMode)mode {
+    NSLog(@"SodyoSDK: convertScannerModeToString - mode: %ld", (long)mode);
     switch (mode) {
         case SodyoModeTroubleshoot:
             return @"Troubleshoot";
@@ -223,7 +232,7 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
 #pragma mark - SodyoSDKDelegate
 // Issue #5 fix: nil both callbacks after either fires
 - (void) onSodyoAppLoadSuccess:(NSInteger)AppID {
-    NSLog(@"onSodyoAppLoadSuccess");
+    NSLog(@"SodyoSDK: onSodyoAppLoadSuccess - AppID: %ld, successCallback: %@", (long)AppID, self.successStartCallback ? @"provided" : @"nil");
 
     if (self.successStartCallback != nil) {
         self.successStartCallback(@[[NSNull null]]);
@@ -234,7 +243,7 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
 
 // Issue #6 fix: serialize NSError to string
 - (void) onSodyoAppLoadFailed:(NSInteger)AppID error:(NSError *)error {
-    NSLog(@"Failed loading Sodyo: %@", error);
+    NSLog(@"SodyoSDK: onSodyoAppLoadFailed - AppID: %ld, error: %@, errorCode: %ld, errorDomain: %@", (long)AppID, error.localizedDescription, (long)error.code, error.domain);
     if (self.errorStartCallback != nil) {
         NSString *message = error.localizedDescription ?: @"Unknown error";
         self.errorStartCallback(@[@{@"error": message}]);
@@ -247,29 +256,29 @@ RCT_EXPORT_METHOD(setEnv:(NSString *) env)
 - (void) sodyoError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *desc = error.localizedDescription ?: @"Unknown error";
-        NSLog(@"sodyoError: %@", desc);
+        NSLog(@"SodyoSDK: sodyoError - description: %@, code: %ld, domain: %@, userInfo: %@", desc, (long)error.code, error.domain, error.userInfo);
         [self sendEventWithName:@"EventSodyoError" body:@{@"error": desc}];
     });
 }
 
 // Issue #9 fix: guard against nil marker data
 - (void) SodyoMarkerDetectedWithData:(NSDictionary*)Data {
-    NSLog(@"SodyoMarkerDetectedWithData: %@", Data[@"sodyoMarkerData"]);
+    NSLog(@"SodyoSDK: SodyoMarkerDetectedWithData - fullData: %@, sodyoMarkerData: %@", Data, Data[@"sodyoMarkerData"]);
     id markerData = Data[@"sodyoMarkerData"] ?: [NSNull null];
     [self sendEventWithName:@"EventMarkerDetectSuccess" body:@{@"data": markerData}];
 }
 
 - (void) SodyoMarkerContent:(NSString *)markerId Data:(NSDictionary *)Data {
-    NSLog(@"SodyoMarkerContent: %@", Data);
+    NSLog(@"SodyoSDK: SodyoMarkerContent - markerId: %@, Data: %@", markerId, Data);
     id data = Data ?: @{};
     [self sendEventWithName:@"EventMarkerContent" body:@{@"markerId": markerId ?: @"", @"data": data}];
 }
 
 
 - (void) onModeChange:(SodyoMode)from to:(SodyoMode)to {
-    NSLog(@"onModeChange");
     NSString* fromConverted = [self convertScannerModeToString:from];
     NSString* toConverted = [self convertScannerModeToString:to];
+    NSLog(@"SodyoSDK: onModeChange - from: %@ (%ld) to: %@ (%ld)", fromConverted, (long)from, toConverted, (long)to);
 
     [self sendEventWithName:@"ModeChangeCallback" body:@{@"oldMode": fromConverted, @"newMode": toConverted}];
 }
